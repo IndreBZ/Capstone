@@ -1,0 +1,15 @@
+%sql select distinct Launch_Site from SPACEXTABLE
+%sql select * from SPACEXTABLE where Launch_Site like 'CCA%' limit 5
+%sql select sum(PAYLOAD_MASS__KG_) from SPACEXTABLE where Customer = 'NASA (CRS)'
+%sql select avg(PAYLOAD_MASS__KG_) from SPACEXTABLE where Booster_Version = 'F9 v1.1' 
+%sql select min(Date) from SPACEXTABLE where Mission_Outcome = 'Success'
+
+%sql select Booster_Version, sum(PAYLOAD_MASS__KG_) from SPACEXTABLE where Mission_Outcome = 'Success' group by  Booster_Version having  sum(PAYLOAD_MASS__KG_)between 4000 and 6000
+
+%sql select count(*), Case when Mission_Outcome like '%success%' then 'Successful' else 'Failure' END AS [mission outcomes] from SPACEXTABLE group by Case when Mission_Outcome like '%success%' then 'successful' else 'Failure' END
+
+%sql select Booster_Version, sum(PAYLOAD_MASS__KG_) from SPACEXTABLE where PAYLOAD_MASS__KG_ = (select max(PAYLOAD_MASS__KG_) from SPACEXTABLE) group by Booster_Version
+
+%sql select substr(Date, 6,2),Landing_Outcome,Booster_Version,Launch_Site from SPACEXTABLE where Landing_Outcome like 'Failure%' and substr(Date, 1,4) = '2015'
+
+%sql select Landing_Outcome, count(*) from SPACEXTABLE where (Date between ' 2010-06-04' and '2017-03-20') group by Landing_Outcome order by 2 desc
